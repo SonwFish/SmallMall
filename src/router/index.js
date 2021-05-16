@@ -2,10 +2,11 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 // 懒加载
-const Home = () => import('../views/Home/Home')
-const Category = () => import('../views/category/category')
-const Cart = () => import('../views/cart/Cart')
-const Profile = () => import('../views/profile/profile')
+const Home =() => import('../views/Home/Home')
+const Category =() => import('../views/category/category')
+const Cart =() => import('../views/cart/Cart')
+const Profile =() => import('../views/profile/profile')
+const Detail =() => import('../views/detail/Detail')
 
 // 1.安装插件
 Vue.use(VueRouter)
@@ -30,6 +31,10 @@ const routes = [
   {
     path: '/profile',
     component:Profile
+  },
+  {
+    path: '/detail/:iid',
+    component:Detail
   },
 ]
 

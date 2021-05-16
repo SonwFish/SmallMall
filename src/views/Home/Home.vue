@@ -2,22 +2,26 @@
   <div id="home">
     <!--  导航栏组件-->
     <NavNar class="home-nav"><div slot="center">购物街</div></NavNar>
+    <tab-control :titles="['流行','新款','精选']"
+                 @tabClick="tabClick"
+                 ref="tabControl1" v-show="isTabFixed"
+                 class="tabControl">
+    </tab-control>
 
     <!--滚动Scroll部分-->
     <scroll class="content" ref="scroll" :probe-type="3" :pull-up-load="true"
             @scroll="contentScroll" @pullingUp="loadMore">
       <!--轮播图组件-->
-      <home-swiper :banners="banners"></home-swiper>
+      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"></home-swiper>
       <!--推荐产品组件-->
       <recommend-view :recommends="recommends"></recommend-view>
       <!--特色产品组件-->
       <feature-view></feature-view>
 
       <!--导航控制组件-->
-      <tab-control class="tab-control"
-                   :titles="['流行','新款','精选']"
-                   @tabClick="tabClick">
-      </tab-control>
+      <tab-control :titles="['流行','新款','精选']"
+                   @tabClick="tabClick"
+                   ref="tabControl2"></tab-control>
       <!--商品列表组件-->
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
@@ -65,7 +69,9 @@
         'sell': {page: 0, list: []}
       },
       currentType: 'pop',
-      isShowBackTop: false
+      isShowBackTop: false,
+      tabOffsetTop: 0,
+      isTabFixed: false
     }
   },
   computed: {
@@ -82,6 +88,10 @@
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
   },
+
+    mounted() {
+
+    },
     methods: {
       //事件监听相关的方法
       tabClick(index) {
@@ -96,6 +106,9 @@
             this.currentType = 'sell'
                 break
         }
+        this.$refs.tabControl1.currentIndex = index;
+        this.$refs.tabControl2.currentIndex = index;
+
       },
 
       // 回到顶部
@@ -105,12 +118,23 @@
 
       // 判断返回图标是否显示
       contentScroll(positon) {
+        // 1.判断BackTop是否显示
         this.isShowBackTop = -positon.y > 1000
+
+        // 2.绝对tabControl是否吸顶(position:flex)
+        this.isTabFixed = (-positon.y) > this.tabOffsetTop
       },
 
       //上拉加载更多商品
       loadMore() {
         this.getHomeGoods(this.currentType)
+      },
+
+      swiperImageLoad() {
+        // 获取tabCont的offsetTop
+        // 所有的组件都有一个属性$el：用于获取组件中的元素
+        this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
+
       },
 
       // 网络请求相关的方法
@@ -154,8 +178,8 @@
     z-index: 9;
   }
 
-  .tab-control {
-    /*position: sticky;*/
+  .tabControl {
+    position: relative;
     top: 44px;
     z-index: 9;
   }
@@ -169,4 +193,5 @@
     left: 0;
     right: 0;
   }
+
 </style>
