@@ -41,7 +41,9 @@ export default {
 
 <style scoped>
 .nav-bar {
-
+  position: relative;
+  z-index: 9;
+  background-color: #ffffff;
 }
 .nav-bar img{
   margin-top: 15px;

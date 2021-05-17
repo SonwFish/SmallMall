@@ -71,7 +71,7 @@
       currentType: 'pop',
       isShowBackTop: false,
       tabOffsetTop: 0,
-      isTabFixed: false
+      isTabFixed: false,
     }
   },
   computed: {
@@ -79,7 +79,8 @@
       return this.goods[this.currentType].list
     }
   },
-  created() {
+
+    created() {
     // 1.请求多个数据
     this.getHomeMultidata()
 
