@@ -13,7 +13,6 @@
         <img
           :key="imageIndex"
           :src="image"
-          @load="imgLoad"
           alt=""
           v-for="(image, imageIndex) in item.list"
         />
