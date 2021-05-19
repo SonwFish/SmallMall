@@ -72,6 +72,7 @@
       isShowBackTop: false,
       tabOffsetTop: 0,
       isTabFixed: false,
+      saveY: 0
     }
   },
   computed: {
@@ -92,6 +93,16 @@
 
     mounted() {
 
+    },
+
+    // 钩子函数
+    activated() {
+      this.$refs.scroll.scrollTo(0,this.saveY,0)
+      this.$refs.scroll.refresh()
+    },
+
+    deactivated() {
+      this.saveY = this.$refs.scroll.getCurrentY()
     },
     methods: {
       //事件监听相关的方法
@@ -124,6 +135,7 @@
 
         // 2.绝对tabControl是否吸顶(position:flex)
         this.isTabFixed = (-positon.y) > this.tabOffsetTop
+
       },
 
       //上拉加载更多商品

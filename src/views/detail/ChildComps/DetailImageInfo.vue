@@ -13,6 +13,7 @@
         <img
           :key="imageIndex"
           :src="image"
+          @load="imgLoad"
           alt=""
           v-for="(image, imageIndex) in item.list"
         />
@@ -31,6 +32,26 @@ export default {
       default() {
         return {}
       }
+    }
+  },
+  data() {
+    return {
+      counter: 0,
+      imagesLength: 0
+    }
+  },
+  methods: {
+    imgLoad() {
+      // 判断, 所有的图片都加载完了, 那么进行一次回调就可以了.
+      if (++this.counter === this.imagesLength) {
+        this.$emit('imgLoad');
+      }
+    }
+  },
+  watch: {
+    detailInfo() {
+      // 获取图片的个数
+      this.imagesLength = this.detailInfo.detailImage[0].list.length
     }
   }
 }
