@@ -14,6 +14,7 @@
 
     <!--返回顶部键组件-->
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
+
   </div>
 </template>
 
@@ -32,6 +33,7 @@ import GoodsList from "@/components/content/goods/GoodsList";
 
 import Scroll from "@/components/common/scroll/Scroll";
 
+
 import {getDetail, getRecommend, Goods} from "@/network/detail";
 import {debouce} from "@/common/utils";
 
@@ -48,7 +50,7 @@ export default {
     DetailParamsInfo,
     DetailcommentInfo,
     GoodsList,
-    BackTop
+    BackTop,
   },
   data() {
     return {
@@ -113,7 +115,9 @@ export default {
 
       // 2.将商品添加到购物车
       // this.$store.commit('addCart',product)
-      this.$store.dispatch('addCart',product)
+      this.$store.dispatch('addCart',product).then(res => {
+        this.$toast.show('已添加购物车', 1000)
+      })
     }
   },
   mounted() {
